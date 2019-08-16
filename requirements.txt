@@ -1,0 +1,75 @@
+From Structure analysis of Creativity pdf
+"""
+The statistics are in two groups.
+The first looks at how program control is implemented;
+the second evaluates how variables are defined.
+Once the two numbers are created for a set of programming examples,
+it should be possible to compare the number sets
+looking for the variance that exists within the sets.
+This can be done overall on the full 14 digit numbers,
+but can also be done on each individual statistic.
+"""
+
+Things to find and count for Program control
+
+Subroutines(Functions)
+For Loops
+While Loops
+if
+else
+esle if (counts for one if and one else)
+Case/Switch
+Break(goto)
+
+Things to find and count for variables
+Number of unique variables
+number of ints
+floats
+strings
+arrays which are not strings
+average length of variable names
+Comment status(00 no comment 01 some comment 02 extensive commenting)
+
+
+Approach for automation
+
+define tags which encompass each of the things to look for
+
+<SR> <SR> <tagname1> 
+subrouting
+<EndSR>
+
+The tagged file will then be searched for these tags and increment the counts
+for each element as needed.
+
+The only aspect that will have to be manually typed is the comment status
+
+
+Functions to program
+
+FindTag(tagname)
+  will search through text file with a stack to find the starting tag and end tag
+  example
+  <tagname1>
+    <tagname2>
+    <endtagnme2>
+  <endtagname1>
+  tagname1 will be associated with endtagname 1. This will be done through
+  a stack which will push start tags and pop when end tag is reached
+  if stack is empty, the lined of the last popped tag is the associated
+  endtag.
+
+Count_tags(tagname)
+  Will search throught the text file only looking for start tags and incrementing
+  respective variable as they are found
+  example: A file containing the following
+  <Subroutine tag>
+  def function()
+   <int tag> int a = 0;
+   <if tag> if (a == 0) a++;
+   <else tag> else a--;
+
+   Cout_tags will return 1 subrouting 1 int 1 if 1 else
+
+
+Count_Subroutine
