@@ -9,6 +9,23 @@ looking for the variance that exists within the sets.
 This can be done overall on the full 14 digit numbers,
 but can also be done on each individual statistic.
 """
+List of word and corresponding Statistic
+Subroutine = su>
+For loops = fo>
+While loop = wh>
+if = if>
+else = el>
+else if = el> if>
+case = ca>
+break = br>
+
+Variable = va> variable va> this
+integer = in>
+float = fl>
+char = ch>
+array = ar>
+comment = co>
+
 
 Things to find and count for Program control
 
@@ -35,7 +52,7 @@ Approach for automation
 
 define tags which encompass each of the things to look for
 
-<SR> <SR> <tagname1> 
+<SR> <SR> <tagname1>
 subrouting
 <EndSR>
 
@@ -73,3 +90,6 @@ Count_tags(tagname)
 
 
 Count_Subroutine
+
+
+Times fri aug 16 11-2 3-4:30
