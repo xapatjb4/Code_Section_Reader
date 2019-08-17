@@ -16,10 +16,10 @@ While loop = wh>
 if = if>
 else = el>
 else if = el> if>
-case = ca>
+case = ca> ca>
 break = br>
 
-Variable = va> variable va> this
+Variable = va> variable va> this va> heh
 integer = in>
 float = fl>
 char = ch>
@@ -92,4 +92,4 @@ Count_tags(tagname)
 Count_Subroutine
 
 
-Times fri aug 16 11-2 3-4:30
+Times fri aug 16 11-2 3-4:30 8-9:30

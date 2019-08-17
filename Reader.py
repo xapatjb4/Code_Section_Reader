@@ -1,42 +1,65 @@
 import xlsxwriter as xl
+import openpyxl as oxl
+import os.path
+from os import path
 
+#List of strings to identify the code composition
+def dict_Data(arg):
+    switcher = {
+        #Program Control Data
+        0: 'su>', #SubRoutine
+        1: 'fo>', #For loops
+        2: 'wh>', #While loop
+        3: 'if>', #if
+        4: 'el>', #else
+        5: 'ca>', #case
+        6: 'br>', #break
+        #Variable Data
+        7: 'va>', #Variable
+        8: 'in>', #Integer
+        9: 'fl>', #Float
+        10: 'ch>', # String
+        11: 'ar>', # Array (Not string)
+        12: 'co>', # Comment
+    }
+    return switcher.get(arg, "nothing")
 
-
+#Return instances of each word defined in word, in a line
 def word_find(line,words):
-    #Count the number of instance in each word
-    linetowork = line.strip().split()
-
+    linetocheck = line.strip().split()
     #Making a set of words to be removed from the list to be counted
     toremove= set()
-    for i,x in enumerate(linetowork, start=0 ):
+    for i,x in enumerate(linetocheck, start=0):
         if x not in words:
             toremove.add(x)
-    newTrial = [x for x in linetowork if x not in toremove]
-    #print(newTrial)
+    #Removing the unmatch words from the list
+    instance = [x for x in linetocheck if x not in toremove]
     return list(newTrial)
 
+#Returns the lines which instance of words can be found
 def word_line(file,words):
     with open(file) as f:
         for i,x in enumerate(f, start=1):
-            #print(x)
             common = word_find(x,words)
             if common:
                 print(i, "".join(common))
 
-#count specific words
+#Returns a dictionnary containing the number of instances of words found
 def word_count(file, words):
+    #make a dict with words we're looking for
     counts = dict.fromkeys(words,0)
     with open(file) as f:
         for i,x in enumerate(f, start=0):
+            #Check if line contains words being searched
             common = word_find(x,words)
             if common:
+                #Increment number of instances for word found
                 for word in common:
                     counts[word] += 1
     return counts
 
 #Take in a list of variable names and return the average length
 def list_avg(variables):
-    print(variables)
     if variables:
         return sum(len(word) for word in variables) / len(variables)
     return 0
@@ -58,20 +81,76 @@ def var_avg(file):
     return list_avg(var_names)
 
 #Make a function to format data into excel sheet
-def xl_format(wordcount, row):
+def xl_format(outputName):
+    #Check if file exists
+    if path.exists(outputName):
+        return -1
     #Format should be as follows
     #worksheet1
-    #col 0 subject 1 su 2 for 3 while 4 if 5 else 6 case 7 break
+    #col 0 subject, 1 su, 2 for, 3 while 4 if 5 else 6 case 7 break
     #worksheet2
     #col 0 subject 1 #var 2 #int 3 #float 4 #string 5 #array 6 avg varname 7 comment
+
+    workbook = xl.Workbook(outputName)
+    PCworksheet = workbook.add_worksheet()
+    PCworksheet.write('A1', 'Subject')
+    PCworksheet.write('B1', 'Subroutine')
+    PCworksheet.write('C1', 'For')
+    PCworksheet.write('D1', 'While')
+    PCworksheet.write('E1', 'If')
+    PCworksheet.write('F1', 'Else')
+    PCworksheet.write('G1', 'Case')
+    PCworksheet.write('H1', 'GoTo')
+
+    Vworksheet= workbook.add_worksheet()
+    Vworksheet.write('A1', 'Subject')
+    Vworksheet.write('B1', '# Vars')
+    Vworksheet.write('C1', '# Ints')
+    Vworksheet.write('D1', '# Floats')
+    Vworksheet.write('E1', '# Chars')
+    Vworksheet.write('F1', '# Arrays')
+    Vworksheet.write('G1', 'Ave Len')
+    Vworksheet.write('H1', 'Comments')
+    workbook.close()
+
+    wb = oxl.load_workbook(outputName)
+    ws = wb['Sheet1']
+    ws.title = 'Program Control'
+    ws = wb['Sheet2']
+    ws.title = 'Variables'
+    wb.save(outputName)
     return 0
+
+#Fill the excel sheet with occurences found
+def xl_fill(outfile, subject, occurences):
+    #take care of program control variable
+    #Modify the xcel sheet to contain the respective instance
+    wb = oxl.load_workbook(outfile)
+    ws = wb['Program Control']
+    ws.cell(subject+1, 1).value = subject
+
+    for x in range(0,7):
+        #Modify row {sujbect}  with war data 0 through 7
+        value = occurences.get(dict_Data(x))
+        ws.cell(subject+1, x+2).value = value
+
+    ws = wb['Variables']
+    ws.cell(subject+1, 1).value = subject
+    for x in range(7, 13):
+        value = occurences.get(dict_Data(x))
+        ws.cell(subject+1, x + 2 - 7).value = value
+    wb.save(outfile)
+    return 0;
 
 
 if __name__ == '__main__':
     file = 'requirements.txt'
-    words = ['su>', 'fo>','wh>','if>','el>','ca>', 'br>',
-    'va>','in>','fl>','ch>','ar>','co']
+    words = []
+    for x in range(13):
+        words.append(dict_Data(x))
+    print(words)
     print('average is ', var_avg(file))
-    #words2 = ['va>','in>','fl>','ch>','ar>','co']
     word_line(file, words)
-    print( word_count(file, words))
+    print(word_count(file, words))
+    print(xl_format("hello.xlsx"))
+    xl_fill("hello.xlsx",2, word_count(file, words))
