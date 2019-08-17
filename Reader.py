@@ -33,8 +33,8 @@ def word_find(line,words):
         if x not in words:
             toremove.add(x)
     #Removing the unmatch words from the list
-    instance = [x for x in linetocheck if x not in toremove]
-    return list(newTrial)
+    instances = [x for x in linetocheck if x not in toremove]
+    return list(instances)
 
 #Returns the lines which instance of words can be found
 def word_line(file,words):

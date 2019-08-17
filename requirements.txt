@@ -15,7 +15,6 @@ For loops = fo>
 While loop = wh>
 if = if>
 else = el>
-else if = el> if>
 case = ca> ca>
 break = br>
 
@@ -92,4 +91,4 @@ Count_tags(tagname)
 Count_Subroutine
 
 
-Times fri aug 16 11-2 3-4:30 8-9:30
+Times fri aug 16 11-2 3-4:30 8-10:30
