@@ -94,4 +94,5 @@ Count_Subroutine
 Times fri aug 16 11-2 3-4:30 8-10:30
 Sat 820 10:20
 11:20 1:50
+2:50 3:50
 Modify var avg to contain non va> strings ( int) etc

@@ -2,6 +2,8 @@ import xlsxwriter as xl
 import openpyxl as oxl
 import os.path
 from os import path
+import glob
+import sys
 
 #List of strings to identify the code composition
 def dict_Data(arg):
@@ -65,6 +67,7 @@ def word_count(file, words):
 
 #Take in a list of variable names and return the average length
 def list_avg(variables):
+    #To see the list of vars uncomment this
     print(variables)
     if variables:
         return sum(len(word) for word in variables) / len(variables)
@@ -79,7 +82,6 @@ def var_avg(file):
         for i,x in enumerate(f, start=0):
             common = set(word_find(x,var_tags))
             if common:
-                print('line', i)
                 line = x.strip().split()
                 #for every index containing va> add the following index to the list
                 for x in range(0,len(line)):
@@ -130,13 +132,14 @@ def xl_format(outputName):
     return 0
 
 #Fill the excel sheet with occurences found
-def xl_fill(outfile, subject, occurences):
+def xl_fill(outfile, subject, occurences, var_avg):
     #take care of program control variable
     #Modify the xcel sheet to contain the respective instance
     wb = oxl.load_workbook(outfile)
     ws = wb['Program Control']
     ws.cell(subject+1, 1).value = subject
 
+    x = 0
     for x in range(0,7):
         #Modify row {sujbect}  with war data 0 through 7
         value = occurences.get(dict_Data(x))
@@ -144,21 +147,34 @@ def xl_fill(outfile, subject, occurences):
 
     ws = wb['Variables']
     ws.cell(subject+1, 1).value = subject
-    for x in range(7, 13):
+    for x in range(7, 12):
         value = occurences.get(dict_Data(x))
         ws.cell(subject+1, x + 2 - 7).value = value
+    ws.cell(subject+1, x + 3 -7).value = var_avg
     wb.save(outfile)
     return 0;
 
 
 if __name__ == '__main__':
-    file = 'requirements.txt'
+    outputFile = sys.argv[2]
+    xl_format(outputFile)
+    inputDir = sys.argv[1] + "/*.txt"
+    print(inputDir, outputFile)
+
     words = []
     for x in range(13):
         words.append(dict_Data(x))
-    print(words)
-    print('average is ', var_avg(file))
-    word_line(file, words)
-    print(word_count(file, words))
-    print(xl_format("hello.xlsx"))
-    xl_fill("hello.xlsx",2, word_count(file, words))
+    files = glob.glob(inputDir)
+    print(files)
+    #Split the string to remove
+    for x in range(13):
+        words.append(dict_Data(x))
+
+    for file in files:
+        split_file = file.split('/')# take the / from path
+        subject = int(split_file[1][:-4])# Taking out the .txt
+        print(split_file)
+        print(subject)
+        xl_fill(outputFile, subject, word_count(file, words),var_avg(file))
+    #word_line(file, words)
+    #print(word_count(file, words))
