@@ -86,6 +86,8 @@ def var_avg(file):
                 #for every index containing va> add the following index to the list
                 for x in range(0,len(line)):
                     if line[x] in var_tags:
+                        #To print var line with var
+                        print(i+1, line[x], line[x+1])
                         var_names.append(line[x+1])
                         x+=1
     return list_avg(var_names)
@@ -151,6 +153,7 @@ def xl_fill(outfile, subject, occurences, var_avg):
         value = occurences.get(dict_Data(x))
         ws.cell(subject+1, x + 2 - 7).value = value
     ws.cell(subject+1, x + 3 -7).value = var_avg
+    ws.cell(subject+1, x + 4 -7).value = occurences.get('co>')
     wb.save(outfile)
     return 0;
 
@@ -165,7 +168,6 @@ if __name__ == '__main__':
     for x in range(13):
         words.append(dict_Data(x))
     files = glob.glob(inputDir)
-    print(files)
     #Split the string to remove
     for x in range(13):
         words.append(dict_Data(x))
@@ -173,8 +175,9 @@ if __name__ == '__main__':
     for file in files:
         split_file = file.split('/')# take the / from path
         subject = int(split_file[1][:-4])# Taking out the .txt
-        print(split_file)
         print(subject)
         xl_fill(outputFile, subject, word_count(file, words),var_avg(file))
+        #word_line(file,words)
+        print('-----------------------------------------------------------')
     #word_line(file, words)
     #print(word_count(file, words))
