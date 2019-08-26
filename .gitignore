@@ -1,7 +1,6 @@
 readerEnv/
-S1/
+S*/
 .
 ..
 .DS_Store
-S2/
 *.xlsx

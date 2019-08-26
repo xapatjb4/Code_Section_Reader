@@ -119,9 +119,6 @@ def xl_format1(workbookName):
 
     return 0
 
-def xl_format2(outputName):
-    return 0
-
 def xl_PC_page(workbook):
     ws = workbook.create_sheet('Program Control')
     ws['A1'] = 'Subject'
@@ -194,13 +191,13 @@ def xl_fill(outfile, subject, occurences, var_avg):
     ws.cell(subject+1, 3).value = progLan
 
     wb.save(outfile)
-    return 0;
+    return 0
 
 
 if __name__ == '__main__':
+    inputDir = sys.argv[1] + "/*.txt"
     outputFile = sys.argv[2]
     xl_format1(outputFile)
-    inputDir = sys.argv[1] + "/*.txt"
     #print(inputDir, outputFile)
     words = []
     for x in range(14):
@@ -212,7 +209,4 @@ if __name__ == '__main__':
         subject = int(split_file[1][:-4])# Taking out the .txt
         print(subject)
         xl_fill(outputFile, subject, word_count(file, words),var_avg(file))
-        #word_line(file,words)
         print('-----------------------------------------------------------')
-    #word_line(file, words)
-    #print(word_count(file, words))
