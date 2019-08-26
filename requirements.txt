@@ -91,9 +91,20 @@ Count_tags(tagname)
 Count_Subroutine
 
 
-Times fri aug 16 11-2 3-4:30 8-10:30
-Sat 820 10:20
-11:20 1:50
-2:50 3:50
-8:00 9:00
+Times fri aug 16
+11-2 = 2
+3-4:30 = 1.5
+8-10:30 = 2.5
+tot = 6
+Sat
+820 10:20 = 2
+11:20 1:50 = 2.5
+2:50 3:50 = 1
+8:00 9:00 = 1
+tot = 6.5
 Modify var avg to contain non va> strings ( int) etc
+Sun
+10-11:30 = 1.5
+4:5 = 1
+6:8 = 2
+tot = 4.5
