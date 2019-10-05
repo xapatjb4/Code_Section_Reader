@@ -80,19 +80,23 @@ def list_avg(variables):
     #find va> then add var name to list
 def var_avg(file):
     var_tags = ['in>', 'fl>', 'ar>', 'ch>', 'va>']
+    bad_chars = [';', ':', '[', ']', ',','=', '(', ')']
     var_names = []
     with open(file) as f:
         for i,x in enumerate(f, start=0):
             common = set(word_find(x,var_tags))
             if common:
+                #clean up the strings containing spec chars
+                for c in bad_chars:
+                    x = x.replace(c,' ')
                 line = x.strip().split()
                 #for every index containing va> add the following index to the list
-                for x in range(0,len(line)):
-                    if line[x] in var_tags:
+                for ind in range(0,len(line)):
+                    if line[ind] in var_tags:
                         #To print var line with var
-                        print(i+1, line[x], line[x+1])
-                        var_names.append(line[x+1])
-                        x+=1
+                        print(i+1, line[ind], line[ind+1])
+                        var_names.append(line[ind+1])
+                        ind+=1
     return list_avg(var_names)
 
 #Make a function to format data into excel sheet
