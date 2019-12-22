@@ -95,6 +95,10 @@ def var_avg(file):
                     if line[ind] in var_tags:
                         #To print var line with var
                         print(i+1, line[ind], line[ind+1])
+                        # print(i+1, ind)
+                        # print(line[ind])
+                        # print(line[ind+1])
+
                         var_names.append(line[ind+1])
                         ind+=1
     return list_avg(var_names)
